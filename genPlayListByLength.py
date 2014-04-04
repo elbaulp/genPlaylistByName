@@ -51,18 +51,16 @@ def main():
                 except Exception as e:
                     handleException(e)
                 else:
-                    if curr_length < length:
-                        curr_length += mp3_file.info.length
-                        curr_items.append(directory+music_file+'\n')
+                    curr_length += mp3_file.info.length
+                    curr_items.append(directory+music_file+'\n')
             elif music_file.endswith('.mp4'):
                 try:
                     mp4_file = MP4(directory + music_file)
                 except Exception as e:
                     handleException(e)
                 else:
-                    if curr_length < length:
-                        curr_length += mp4_file.info.length
-                        curr_items.append(directory+music_file+'\n')
+                    curr_length += mp4_file.info.length
+                    curr_items.append(directory+music_file+'\n')
     
 def handleException(e):
     print type(e)     # the exception instance
