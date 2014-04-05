@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 '''
 Created on Apr 4, 2014
 
@@ -8,32 +10,32 @@ Licensed under GPLv3
 
 import argparse
 import fnmatch
-from mutagen.mp3 import MP3 
+from mutagen.mp3 import MP3
 from mutagen.mp4 import MP4
 from os.path import os, basename
 from sys import argv
 
 def main():
-    
+
     parser = argparse.ArgumentParser(description='Generate playlists with the indicated length')
     parser.add_argument('-d','--directory', help='Directory with music files',type=str, required=True)
     parser.add_argument('-l', '--length', help='Length of the playlist, in minutes', type=int, required=True)
 
     args = parser.parse_args()
-    
+
     directory = args.directory
     length =  args.length * 60
-    
-    
-    path = r'./playlists/' 
+
+
+    path = r'./playlists/'
     if not os.path.exists(path): os.makedirs(path)
-    
+
     playlist_basename = argv[0][:-3] + str(length/60) + '_'
     playlist_number = 1
     curr_length = 0
     curr_items = []
     too_long_items = []
-    
+
     for music_file in os.listdir(directory):
         if fnmatch.fnmatch(music_file, '*.mp[43]'):
             if curr_length >= length:
@@ -71,11 +73,11 @@ def main():
                     else:
                         curr_length += file_length
                         curr_items.append(directory+music_file+'\n')
-                        
+
     print '\nThis files exceeded the given length and were not added to any playlist...\n'
     for i in too_long_items:
         print basename(i)
-    
+
 def handleException(e):
     print type(e)     # the exception instance
     print e.args      # arguments stored in .args
