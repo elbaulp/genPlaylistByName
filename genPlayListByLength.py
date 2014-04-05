@@ -10,9 +10,8 @@ import argparse
 import fnmatch
 from mutagen.mp3 import MP3 
 from mutagen.mp4 import MP4
-from os.path import os
+from os.path import os, basename
 from sys import argv
-
 
 def main():
     
@@ -29,10 +28,11 @@ def main():
     path = r'./playlists/' 
     if not os.path.exists(path): os.makedirs(path)
     
-    playlist_basename = argv[0] + str(length/60) + '_'
+    playlist_basename = argv[0][:-3] + str(length/60) + '_'
     playlist_number = 1
     curr_length = 0
     curr_items = []
+    too_long_items = []
     
     for music_file in os.listdir(directory):
         if fnmatch.fnmatch(music_file, '*.mp[43]'):
@@ -51,16 +51,30 @@ def main():
                 except Exception as e:
                     handleException(e)
                 else:
-                    curr_length += mp3_file.info.length
-                    curr_items.append(directory+music_file+'\n')
+                    file_length = mp3_file.info.length
+                    if file_length > length:
+                        too_long_items.append(directory+music_file)
+                        print 'File %s exceed the given length (%s)' % (music_file, file_length)
+                    else:
+                        curr_length += file_length
+                        curr_items.append(directory+music_file+'\n')
             elif music_file.endswith('.mp4'):
                 try:
                     mp4_file = MP4(directory + music_file)
                 except Exception as e:
                     handleException(e)
                 else:
-                    curr_length += mp4_file.info.length
-                    curr_items.append(directory+music_file+'\n')
+                    file_length = mp4_file.info.length
+                    if file_length > length:
+                        too_long_items.append(directory + music_file)
+                        print 'File %s exceed the given length (%s)' % (music_file, file_length)
+                    else:
+                        curr_length += file_length
+                        curr_items.append(directory+music_file+'\n')
+                        
+    print '\nThis files exceeded the given length and were not added to any playlist...\n'
+    for i in too_long_items:
+        print basename(i)
     
 def handleException(e):
     print type(e)     # the exception instance
