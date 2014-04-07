@@ -10,10 +10,13 @@ Licensed under GPLv3
 
 import argparse
 import fnmatch
+
 from mutagen.mp3 import MP3
 from mutagen.mp4 import MP4
+
 from os.path import os, basename
 from sys import argv
+from random import shuffle
 
 def main():
 
@@ -35,44 +38,50 @@ def main():
     curr_length = 0
     curr_items = []
     too_long_items = []
+    all_items = []
 
     for music_file in os.listdir(directory):
         if fnmatch.fnmatch(music_file, '*.mp[43]'):
-            if curr_length >= length:
-                name = path + playlist_basename + str(playlist_number) + '.m3u'
-                playlist_file = open(name, 'w')
-                playlist_file.writelines(curr_items)
-                playlist_file.close()
-                print 'Playlist generated, name: ', name , ' length ', curr_length/60 , 'min'
-                playlist_number += 1
-                curr_length = 0
-                curr_items = []
-            elif music_file.endswith('.mp3'):
-                try:
-                    mp3_file = MP3(directory + music_file)
-                except Exception as e:
-                    handleException(e)
+            all_items.append(directory + music_file)
+    
+    shuffle(all_items)
+    
+    for item in all_items:
+        if curr_length >= length:
+            name = path + playlist_basename + str(playlist_number) + '.m3u'
+            playlist_file = open(name, 'w')
+            playlist_file.writelines(curr_items)
+            playlist_file.close()
+            print 'Playlist generated, name: ', name , ' length ', curr_length/60 , 'min'
+            playlist_number += 1
+            curr_length = 0
+            curr_items = []
+        elif item.endswith('.mp3'):
+            try:
+                mp3_file = MP3(item)
+            except Exception as e:
+                handleException(e)
+            else:
+                file_length = mp3_file.info.length
+                if file_length > length:
+                    too_long_items.append(item)
+                    print 'File %s exceed the given length (%s)' % (item, file_length)
                 else:
-                    file_length = mp3_file.info.length
-                    if file_length > length:
-                        too_long_items.append(directory+music_file)
-                        print 'File %s exceed the given length (%s)' % (music_file, file_length)
-                    else:
-                        curr_length += file_length
-                        curr_items.append(directory+music_file+'\n')
-            elif music_file.endswith('.mp4'):
-                try:
-                    mp4_file = MP4(directory + music_file)
-                except Exception as e:
-                    handleException(e)
+                    curr_length += file_length
+                    curr_items.append(directory+item+'\n')
+        elif item.endswith('.mp4'):
+            try:
+                mp4_file = MP4(item)
+            except Exception as e:
+                handleException(e)
+            else:
+                file_length = mp4_file.info.length
+                if file_length > length:
+                    too_long_items.append(directory + item)
+                    print 'File %s exceed the given length (%s)' % (item, file_length)
                 else:
-                    file_length = mp4_file.info.length
-                    if file_length > length:
-                        too_long_items.append(directory + music_file)
-                        print 'File %s exceed the given length (%s)' % (music_file, file_length)
-                    else:
-                        curr_length += file_length
-                        curr_items.append(directory+music_file+'\n')
+                    curr_length += file_length
+                    curr_items.append(item+'\n')
 
     print '\nThis files exceeded the given length and were not added to any playlist...\n'
     for i in too_long_items:
