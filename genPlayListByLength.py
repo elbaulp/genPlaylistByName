@@ -33,7 +33,7 @@ def main():
     path = r'./playlists/'
     if not os.path.exists(path): os.makedirs(path)
 
-    playlist_basename = argv[0][:-3] + str(length/60) + '_'
+    playlist_basename = basename(argv[0][:-3]) + str(length/60) + '_'
     playlist_number = 1
     curr_length = 0
     curr_items = []
@@ -68,7 +68,7 @@ def main():
                     print 'File %s exceed the given length (%s)' % (item, file_length)
                 else:
                     curr_length += file_length
-                    curr_items.append(directory+item+'\n')
+                    curr_items.append(item+'\n')
         elif item.endswith('.mp4'):
             try:
                 mp4_file = MP4(item)
@@ -77,7 +77,7 @@ def main():
             else:
                 file_length = mp4_file.info.length
                 if file_length > length:
-                    too_long_items.append(directory + item)
+                    too_long_items.append(item)
                     print 'File %s exceed the given length (%s)' % (item, file_length)
                 else:
                     curr_length += file_length
