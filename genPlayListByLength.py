@@ -56,29 +56,18 @@ def main():
             playlist_number += 1
             curr_length = 0
             curr_items = []
-        elif item.endswith('.mp3'):
+        else:
+            encoding = item[-4:]
+            encodings = {'.mp3': MP3, '.mp4': MP4}
             try:
-                mp3_file = MP3(item)
+                music_file = encodings[encoding](item)
             except Exception as e:
                 handleException(e)
             else:
-                file_length = mp3_file.info.length
+                file_length = music_file.info.length
                 if file_length > length:
                     too_long_items.append(item)
-                    print 'File %s exceed the given length (%s)' % (item, file_length)
-                else:
-                    curr_length += file_length
-                    curr_items.append(item+'\n')
-        elif item.endswith('.mp4'):
-            try:
-                mp4_file = MP4(item)
-            except Exception as e:
-                handleException(e)
-            else:
-                file_length = mp4_file.info.length
-                if file_length > length:
-                    too_long_items.append(item)
-                    print 'File %s exceed the given length (%s)' % (item, file_length)
+                    print 'File %s exceed the given length (%s min)' % (item, file_length/60)
                 else:
                     curr_length += file_length
                     curr_items.append(item+'\n')
