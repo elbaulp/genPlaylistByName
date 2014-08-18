@@ -33,7 +33,7 @@ def main():
     path = r'./playlists/'
     if not os.path.exists(path): os.makedirs(path)
 
-    playlist_basename = basename(argv[0][:-3]) + str(length/60) + '_'
+    playlist_basename = basename(argv[0][:-3]) + '_'
     playlist_number = 1
     curr_length = 0
     curr_items = []
@@ -43,12 +43,12 @@ def main():
     for music_file in os.listdir(directory):
         if fnmatch.fnmatch(music_file, '*.mp[43]'):
             all_items.append(directory + music_file)
-    
+
     shuffle(all_items)
-    
+
     for item in all_items:
         if curr_length >= length:
-            name = path + playlist_basename + str(playlist_number) + '.m3u'
+            name = path + str(playlist_number) + '. ' + playlist_basename + str(int(curr_length/60)) + '.m3u'
             playlist_file = open(name, 'w')
             playlist_file.writelines(curr_items)
             playlist_file.close()
