@@ -6,6 +6,8 @@ Created on Apr 4, 2014
 @author: Alejandro Alcalde
 
 Licensed under GPLv3
+
+More info: http://wp.me/p2kdv9-Bq
 '''
 
 import argparse
