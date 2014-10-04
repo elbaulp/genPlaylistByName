@@ -15,6 +15,7 @@ import fnmatch
 
 from mutagen.mp3 import MP3
 from mutagen.mp4 import MP4
+from mutagen.flac import FLAC
 
 from os.path import os, basename
 from sys import argv
@@ -43,7 +44,7 @@ def main():
     all_items = []
 
     for music_file in os.listdir(directory):
-        if fnmatch.fnmatch(music_file, '*.mp[43]'):
+        if fnmatch.fnmatch(music_file, '*.mp[43]') or fnmatch.fnmatch(music_file, '*.flac'):
             all_items.append(directory + music_file)
 
     shuffle(all_items)
@@ -60,7 +61,7 @@ def main():
             curr_items = []
         else:
             encoding = item[-4:]
-            encodings = {'.mp3': MP3, '.mp4': MP4}
+            encodings = {'.mp3': MP3, '.mp4': MP4, 'flac': FLAC}
             try:
                 music_file = encodings[encoding](item)
             except Exception as e:
