@@ -38,7 +38,7 @@ def main():
     path = r'./playlists/'
     if not os.path.exists(path): os.makedirs(path)
     
-    playlist_basename = basename(argv[0][:-3]) + '_'
+    playlist_basename = 'playlist_' #basename(argv[0][:-3]) + '_'
     curr_items = []
     too_long_items = []
     all_items = []
@@ -79,7 +79,7 @@ def main():
 
 def create_playlist(path, playlist_basename, curr_items):
     global playlist_number, curr_length
-    name = path + str(playlist_number) + '. ' + playlist_basename + str(int(curr_length/60)) + '.m3u'
+    name = path + str(playlist_number) + '. ' + playlist_basename + str(int(curr_length/60)) + 'min' + '.m3u'
     playlist_file = open(name, 'w')
     playlist_file.writelines(curr_items)
     playlist_file.close()
