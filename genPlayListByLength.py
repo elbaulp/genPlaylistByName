@@ -17,6 +17,7 @@ from mutagen.mp3 import MP3
 from mutagen.mp4 import MP4
 from mutagen.flac import FLAC
 
+from collections import deque
 from os.path import os, basename
 from sys import argv
 from random import shuffle
@@ -43,10 +44,16 @@ def main():
     too_long_items = []
     all_items = []
 
-    for music_file in os.listdir(directory):
-        if fnmatch.fnmatch(music_file, '*.mp[43]') or fnmatch.fnmatch(music_file, '*.flac'):
-            all_items.append(directory + music_file)
-
+    dir_queue = deque([directory])
+    while len(dir_queue) != 0:
+        cur_directory = dir_queue.popleft()
+        for node in os.listdir(cur_directory):
+            node = os.path.join(cur_directory, node)
+            if os.path.isdir(node):
+                dir_queue.append(node)
+            elif fnmatch.fnmatch(node, '*.mp[43]') or fnmatch.fnmatch(node, '*.flac'):
+                all_items.append(node)
+        
     shuffle(all_items)
 
     for item in all_items:
