@@ -1,8 +1,10 @@
-GenPlaylistByName
+Gen Playlist By Length
 =================
 
 
 A little python script for generate playlist with a given length in minutes.
+
+More info: https://elbauldelprogramador.com/en/generar-listas-de-reproduccion-determinada-duracion-python/
 
 ----
 

@@ -64,7 +64,7 @@ def main():
                 file_length = music_file.info.length
                 if file_length > length:
                     too_long_items.append(item)
-                    print 'File %s exceed the given length (%s min)' % (item, file_length/60)
+                    print("File %s exceed the given length (%s min)" % (item, file_length/60))
                 else:
                     curr_length += file_length
                     curr_items.append(item+'\n')
@@ -73,9 +73,9 @@ def main():
         create_playlist(path, playlist_basename, curr_items)
 
     if too_long_items:
-        print '\nThis files exceeded the given length and were not added to any playlist...\n'
+        print("\nThis files exceeded the given length and were not added to any playlist...\n")
         for i in too_long_items:
-            print basename(i)
+            print(basename(i))
 
 def create_playlist(path, playlist_basename, curr_items):
     global playlist_number, curr_length
@@ -83,15 +83,15 @@ def create_playlist(path, playlist_basename, curr_items):
     playlist_file = open(name, 'w')
     playlist_file.writelines(curr_items)
     playlist_file.close()
-    print 'Playlist generated, name: ', name , ' length ', curr_length/60 , 'min'
+    print('Playlist generated, name: ', name , ' length ', curr_length/60 , 'min')
     playlist_number += 1
     curr_length = 0
     del curr_items[:]
 
 def handleException(e):
-    print type(e)     # the exception instance
-    print e.args      # arguments stored in .args
-    print e           # __str__ allows args to printed directly
+    print(type(e))     # the exception instance
+    print(e.args)      # arguments stored in .args
+    print(e)           # __str__ allows args to printed directly
 
 if __name__ == '__main__':
     main()
