@@ -14,4 +14,4 @@ Más información : http://elbauldelprogramador.com/generar-listas-de-reproducci
 
 # Contributors
 
-Thanks to [Leotok](https://github.com/leotok) for adding recursive folder support.
+Thanks to [@leotok](https://github.com/leotok) for adding recursive folder support.
