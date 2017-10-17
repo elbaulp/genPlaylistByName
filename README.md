@@ -2,7 +2,7 @@ Gen Playlist By Length
 =================
 
 
-A little python script for generate playlist with a given length in minutes.
+A little python script for generating playlist of a given time period in minutes.
 
 More info: https://elbauldelprogramador.com/en/generar-listas-de-reproduccion-determinada-duracion-python/
 
